@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-
+import { NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setLinkActive } from '../Slices/Header/headerSlice';
 const Header = () => {
     const [showMenu, setShowMenu] = useState(true);
+    const links = useSelector((state) => state.header.links);
+    const dispatch = useDispatch();
     return <div>
         <nav className="relative z-50 h-24 select-none" >
             <div className="container relative flex flex-wrap items-center justify-between h-24 mx-auto overflow-hidden font-medium border-b border-gray-200 md:overflow-visible lg:justify-center sm:px-4 md:px-2">
@@ -14,10 +18,13 @@ const Header = () => {
                     <div className="flex-col w-full h-auto overflow-hidden bg-white rounded-lg md:bg-transparent md:overflow-visible md:rounded-none md:relative md:flex md:flex-row">
                         <a href="#_" className="inline-flex items-center block w-auto h-16 px-6 text-xl font-black leading-none text-gray-900 md:hidden">tails<span className="text-indigo-600">.</span></a>
                         <div className="flex flex-col items-start justify-center w-full space-x-6 text-center lg:space-x-8 md:w-2/3 md:mt-0 md:flex-row md:items-center">
-                            <a href="#_" className="inline-block w-full py-2 mx-0 ml-6 font-medium text-left text-indigo-600 md:ml-0 md:w-auto md:px-0 md:mx-2 lg:mx-3 md:text-center">Market</a>
-                            <a href="#_" className="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-indigo-600 lg:mx-3 md:text-center">Exchange</a>
-                            <a href="#_" className="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-indigo-600 lg:mx-3 md:text-center">Tutorials</a>
-                            <a href="#_" className="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-indigo-600 lg:mx-3 md:text-center">Wallets</a>
+                            {
+                                links.map(link =>
+                                    <NavLink key={link.href} to={link.href} className={({ isActive }) =>
+                                        isActive ? 'text-indigo-600' : 'text-gray-700'
+                                    }>{link.text}</NavLink>
+                                )
+                            }
 
                         </div>
                         <div className="flex flex-col items-start justify-end w-full pt-4 md:items-center md:w-1/3 md:flex-row md:py-0">
@@ -48,5 +55,6 @@ const Header = () => {
         </nav >
     </div >;
 };
+
 
 export default Header;
